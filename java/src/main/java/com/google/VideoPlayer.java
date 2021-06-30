@@ -6,12 +6,14 @@ public class VideoPlayer {
 
     private final VideoLibrary videoLibrary;
     private final VideoPlaylists videoPlaylists;
+    private final SearchVideoLibrary searchVideoLibrary;
     private Video playingVideo = null;
     private boolean isPaused = false;
 
     public VideoPlayer() {
         this.videoLibrary = new VideoLibrary();
         this.videoPlaylists = new VideoPlaylists();
+        this.searchVideoLibrary = new SearchVideoLibrary(videoLibrary);
     }
 
     public void numberOfVideos() {
@@ -152,7 +154,10 @@ public class VideoPlayer {
     }
 
     public void searchVideos(String searchTerm) {
-        System.out.println("searchVideos needs implementation");
+        Video video = searchVideoLibrary.SearchVideoWithName(searchTerm);
+        if(video != null){
+            playVideo(video.getVideoId());
+        }
     }
 
     public void searchVideosWithTag(String videoTag) {
