@@ -30,4 +30,12 @@ class Video {
   List<String> getTags() {
     return tags;
   }
+
+  String getStringTags() {
+    StringBuilder tagBuilder = new StringBuilder();
+    for (String tag: getTags()) {
+      tagBuilder.append(tag).append(" ");
+    }
+    return tagBuilder.toString().trim();
+  }
 }
