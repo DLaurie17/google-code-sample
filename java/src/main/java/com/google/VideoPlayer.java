@@ -1,18 +1,17 @@
 package com.google;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class VideoPlayer {
 
     private final VideoLibrary videoLibrary;
+    private final VideoPlaylists videoPlaylists;
     private Video playingVideo = null;
     private boolean isPaused = false;
 
     public VideoPlayer() {
         this.videoLibrary = new VideoLibrary();
+        this.videoPlaylists = new VideoPlaylists();
     }
 
     public void numberOfVideos() {
@@ -20,7 +19,13 @@ public class VideoPlayer {
     }
 
     public void showAllVideos() {
+
         List<Video> videos = videoLibrary.getVideos();
+        //sorting with lambda
+        //videos.sort((video1, video2) -> video1.getTitle().compareTo(video2.getTitle()));
+        //or with Comparator
+        //videos.sort(Comparator.comparing(Video::getTitle));
+
         String[] messages = new String[videos.size()];
         int counter = 0;
         for (Video video : videos) {
@@ -81,8 +86,8 @@ public class VideoPlayer {
     }
 
     public void continueVideo() {
-        if(playingVideo != null){
-            if(!isPaused){
+        if (playingVideo != null) {
+            if (!isPaused) {
                 System.out.println("Cannot continue video: Video is not paused");
             } else {
                 isPaused = false;
@@ -95,9 +100,9 @@ public class VideoPlayer {
 
     public void showPlaying() {
 
-        if(playingVideo != null){
+        if (playingVideo != null) {
             String message = "Currently playing: " + playingVideo.getTitle() + " (" + playingVideo.getVideoId() + ") [" + playingVideo.getStringTags() + "]";
-            if(!isPaused){
+            if (!isPaused) {
                 System.out.println(message);
             } else {
                 System.out.println(message + " - PAUSED");
@@ -108,31 +113,42 @@ public class VideoPlayer {
     }
 
     public void createPlaylist(String playlistName) {
-        System.out.println("createPlaylist needs implementation");
+        videoPlaylists.createPlaylist(playlistName);
     }
 
     public void addVideoToPlaylist(String playlistName, String videoId) {
-        System.out.println("addVideoToPlaylist needs implementation");
+        Video video = videoLibrary.getVideo(videoId);
+        videoPlaylists.addVideoToPlaylist(playlistName, video);
     }
 
     public void showAllPlaylists() {
-        System.out.println("showAllPlaylists needs implementation");
+        List<String> playlistNames = videoPlaylists.getPlaylistNames();
+        if (!playlistNames.isEmpty()) {
+            System.out.println("Showing all playlists:");
+            Collections.sort(playlistNames);
+            for (String playlistName : playlistNames) {
+                System.out.println(playlistName);
+            }
+        } else {
+            System.out.println("No playlists exist yet");
+        }
     }
 
     public void showPlaylist(String playlistName) {
-        System.out.println("showPlaylist needs implementation");
+        videoPlaylists.getPlaylistVideos(playlistName);
     }
 
     public void removeFromPlaylist(String playlistName, String videoId) {
-        System.out.println("removeFromPlaylist needs implementation");
+        Video video = videoLibrary.getVideo(videoId);
+        videoPlaylists.removeVideoFromPlaylist(playlistName, video);
     }
 
     public void clearPlaylist(String playlistName) {
-        System.out.println("clearPlaylist needs implementation");
+        videoPlaylists.clearPlaylist(playlistName);
     }
 
     public void deletePlaylist(String playlistName) {
-        System.out.println("deletePlaylist needs implementation");
+        videoPlaylists.deletePlaylist(playlistName);
     }
 
     public void searchVideos(String searchTerm) {
